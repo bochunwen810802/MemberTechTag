@@ -9,6 +9,10 @@ import {
   TableHead,
   TableRow,
   Typography,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from '@mui/material';
 import {
   RadarChart,
@@ -19,15 +23,23 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
-import { MemberSkills } from '../types';
+import { MemberSkills, ScoringCriteria } from '../types';
 
 interface TeamStatsProps {
   memberSkills: MemberSkills[];
+  skillCategories: ScoringCriteria[];
+  selectedTeamRole: string;
+  setSelectedTeamRole: (role: string) => void;
 }
 
-const TeamStats: React.FC<TeamStatsProps> = ({ memberSkills }) => {
-  // 计算每个分类的团队平均值
-  const categoryStats = memberSkills.reduce((acc, member) => {
+const TEAM_ROLES = ['TPM', 'BA', '維運', '系統分析', '架構', 'DE', 'DS'];
+
+const TeamStats: React.FC<TeamStatsProps> = ({ memberSkills, skillCategories, selectedTeamRole, setSelectedTeamRole }) => {
+  // 篩選出該職位的成員
+  const filteredMembers = memberSkills.filter(m => m.role === selectedTeamRole);
+
+  // 計算每個分類的團隊平均值
+  const categoryStats = filteredMembers.reduce((acc, member) => {
     member.skills.forEach(skill => {
       if (!acc[skill.category]) {
         acc[skill.category] = {
@@ -37,36 +49,53 @@ const TeamStats: React.FC<TeamStatsProps> = ({ memberSkills }) => {
           members: new Set(),
         };
       }
+      // 依照職位抓標準
+      const categoryCriteria = skillCategories.find(c => (c.category ?? '').trim() === (skill.category ?? '').trim());
+      const expectedScore = categoryCriteria ? (categoryCriteria.scores[selectedTeamRole] || 0) : 0;
       acc[skill.category].actualTotal += skill.score;
-      acc[skill.category].expectedTotal += skill.expectedScore;
+      acc[skill.category].expectedTotal += expectedScore;
       acc[skill.category].count += 1;
       acc[skill.category].members.add(member.name);
     });
     return acc;
   }, {} as { [key: string]: { actualTotal: number; expectedTotal: number; count: number; members: Set<string> } });
 
-  // 转换为雷达图数据格式
+  // 轉換為雷達圖和表格資料格式
   const radarData = Object.entries(categoryStats).map(([category, stats]) => ({
     subject: category,
     actual: Number((stats.actualTotal / stats.count).toFixed(2)),
     expected: Number((stats.expectedTotal / stats.count).toFixed(2)),
   }));
 
-  // 转换为表格数据格式
   const tableData = Object.entries(categoryStats).map(([category, stats]) => ({
     category,
     actualAverage: Number((stats.actualTotal / stats.count).toFixed(2)),
     expectedAverage: Number((stats.expectedTotal / stats.count).toFixed(2)),
     memberCount: stats.members.size,
     gap: Number((stats.actualTotal / stats.count - stats.expectedTotal / stats.count).toFixed(2)),
-  }));
+  }))
+  // 依 gap 由大到小排序
+  .sort((a, b) => b.gap - a.gap);
 
   return (
     <Box sx={{ width: '100%' }}>
-      <Typography variant="h6" gutterBottom>
-        團隊技能統計
-      </Typography>
-      
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+        <FormControl sx={{ minWidth: 180 }}>
+          <InputLabel>選擇職位</InputLabel>
+          <Select
+            value={selectedTeamRole}
+            label="選擇職位"
+            onChange={e => setSelectedTeamRole(e.target.value)}
+          >
+            {TEAM_ROLES.map(role => (
+              <MenuItem key={role} value={role}>{role}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <Typography sx={{ ml: 3 }} color="text.secondary">
+          目前{selectedTeamRole}成員：{filteredMembers.map(m => m.name).join('、') || '無'}
+        </Typography>
+      </Box>
       <Box sx={{ mb: 4 }}>
         <ResponsiveContainer width="100%" height={400}>
           <RadarChart cx="50%" cy="50%" outerRadius="80%" data={radarData}>
@@ -91,7 +120,6 @@ const TeamStats: React.FC<TeamStatsProps> = ({ memberSkills }) => {
           </RadarChart>
         </ResponsiveContainer>
       </Box>
-
       <TableContainer component={Paper}>
         <Table>
           <TableHead>

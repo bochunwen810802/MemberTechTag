@@ -48,6 +48,7 @@ function App() {
   const [tabValue, setTabValue] = useState(0);
   const [skillCategories, setSkillCategories] = useState<ScoringCriteria[]>([]);
   const [selectedRole, setSelectedRole] = useState<string>('');
+  const [selectedTeamRole, setSelectedTeamRole] = useState<string>('TPM');
 
   useEffect(() => {
     const loadData = async () => {
@@ -169,7 +170,12 @@ function App() {
       </TabPanel>
 
       <TabPanel value={tabValue} index={1}>
-        <TeamStats memberSkills={memberSkills} />
+        <TeamStats
+          memberSkills={memberSkills}
+          skillCategories={skillCategories}
+          selectedTeamRole={selectedTeamRole}
+          setSelectedTeamRole={setSelectedTeamRole}
+        />
       </TabPanel>
     </Container>
   );
