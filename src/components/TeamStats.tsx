@@ -22,6 +22,7 @@ import {
   Radar,
   Legend,
   ResponsiveContainer,
+  Tooltip,
 } from 'recharts';
 import { MemberSkills, ScoringCriteria } from '../types';
 
@@ -33,6 +34,39 @@ interface TeamStatsProps {
 }
 
 const TEAM_ROLES = ['TPM', 'BA', '維運', '系統分析', '架構', 'DE', 'DS'];
+
+// 自訂 Tooltip 元件
+const CustomTooltip = ({ active, payload, label }: any) => {
+  if (active && payload && payload.length) {
+    const isLack = payload[0]?.payload.isLack;
+    return (
+      <div style={{ background: '#fff', border: '1px solid #ccc', padding: 8 }}>
+        <strong>{label}</strong>
+        <div>實際平均: {payload[0]?.payload.actual}</div>
+        <div>期望平均: {payload[0]?.payload.expected}</div>
+        {isLack && (
+          <div
+            style={{
+              display: 'inline-block',
+              background: '#fff3e0',
+              color: '#ff9800',
+              borderRadius: '10px',
+              padding: '2px 10px',
+              marginTop: 6,
+              fontSize: 13,
+              fontWeight: 500,
+              letterSpacing: 1,
+              border: '1px solid #ffb74d'
+            }}
+          >
+            不足
+          </div>
+        )}
+      </div>
+    );
+  }
+  return null;
+};
 
 const TeamStats: React.FC<TeamStatsProps> = ({ memberSkills, skillCategories, selectedTeamRole, setSelectedTeamRole }) => {
   // 篩選出該職位的成員
@@ -61,11 +95,16 @@ const TeamStats: React.FC<TeamStatsProps> = ({ memberSkills, skillCategories, se
   }, {} as { [key: string]: { actualTotal: number; expectedTotal: number; count: number; members: Set<string> } });
 
   // 轉換為雷達圖和表格資料格式
-  const radarData = Object.entries(categoryStats).map(([category, stats]) => ({
-    subject: category,
-    actual: Number((stats.actualTotal / stats.count).toFixed(2)),
-    expected: Number((stats.expectedTotal / stats.count).toFixed(2)),
-  }));
+  const radarData = Object.entries(categoryStats).map(([category, stats]) => {
+    const actual = Number((stats.actualTotal / stats.count).toFixed(2));
+    const expected = Number((stats.expectedTotal / stats.count).toFixed(2));
+    return {
+      subject: category,
+      actual,
+      expected,
+      isLack: actual < expected,
+    };
+  });
 
   const tableData = Object.entries(categoryStats).map(([category, stats]) => ({
     category,
@@ -100,7 +139,25 @@ const TeamStats: React.FC<TeamStatsProps> = ({ memberSkills, skillCategories, se
         <ResponsiveContainer width="100%" height={400}>
           <RadarChart cx="50%" cy="50%" outerRadius="80%" data={radarData}>
             <PolarGrid />
-            <PolarAngleAxis dataKey="subject" />
+            <PolarAngleAxis
+              dataKey="subject"
+              tick={(props) => {
+                const { payload, x, y, textAnchor, index } = props;
+                const isLack = radarData[index]?.isLack;
+                return (
+                  <text
+                    x={x}
+                    y={y}
+                    textAnchor={textAnchor}
+                    fill={isLack ? '#ff9800' : '#333'}
+                    fontWeight={isLack ? 'bold' : 'normal'}
+                    fontSize={14}
+                  >
+                    {payload.value}
+                  </text>
+                );
+              }}
+            />
             <PolarRadiusAxis angle={30} domain={[0, 3]} />
             <Radar
               name="團隊實際能力"
@@ -116,6 +173,7 @@ const TeamStats: React.FC<TeamStatsProps> = ({ memberSkills, skillCategories, se
               fill="#82ca9d"
               fillOpacity={0.6}
             />
+            <Tooltip content={<CustomTooltip />} />
             <Legend />
           </RadarChart>
         </ResponsiveContainer>

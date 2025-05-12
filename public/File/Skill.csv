@@ -1,0 +1,150 @@
+﻿角色,主要職責,核心技能,建議技能標籤,主要人員,儲備人員,相關證照
+"產品管理師 (產品經理) / 產品負責人
+Product Manager (PM) /
+Product Owner (PO)","負責數據相關產品 (如數據平台、AI 服務) 的產品生命週期
+- 負責數據產品的規劃、開發與生命周期管理
+- 理解業務需求，轉化為數據產品需求
+- 與技術與業務團隊協作，確保產品落地","產品設計與數據驅動決策
+- 數據產品設計與規劃
+- 使用者需求分析
+- 敏捷開發與產品生命週期管理","- 產品管理 (Product Management)
+- 需求分析 (Requirement Analysis)
+- 敏捷開發 (Agile / Scrum / Kanban)
+- 數據驅動決策 (Data-Driven Decision Making)
+- 用戶體驗 (UX/UI) 設計
+- SQL 基礎查詢
+- 市場與競品分析","Jeff, Gail","Denny, Angela",Scrum Alliance - CSPO (Certified Scrum Product Owner)
+"專案管理師 (專案經理)
+Project Manager (PM)","確保專案如期如質交付，並管理跨部門協作
+- 負責數據專案的規劃、執行與交付
+- 管控專案進度、風險與資源分配
+- 與團隊及利害關係人溝通協調","時程管理與跨部門協作
+- 專案規劃與時程管理
+- 風險控管與資源分配
+- 協調跨部門與團隊溝通","- 專案管理 (PMP / Agile PM)
+- 敏捷開發 (Agile / Scrum / Kanban)
+- 時程與風險管理 (Timeline & Risk Management)
+- 資源分配與團隊協作 (Resource Allocation)
+- 進度任務追蹤 (JIRA / Trello / Azure DevOps)
+- 成本與效益分析 (ROI Analysis)","Zak, Jeff, Jin, Gail","Denny, Tom, Mark",PMI-PMP (Project Management Professional)
+"商業分析師
+Business Analyst (BA）","瞭解業務需求、設計數據解決方案、推動業務決策
+- 分析業務需求，轉化為數據需求
+- 建立關鍵業務指標 (KPI) 來驅動決策
+- 設計報表與儀表板，提供洞察","商業需求分析與數據應用
+- 商業需求轉化為數據需求
+- 指標定義與分析
+- 建立數據報告與儀表板","- 業務流程分析 (Business Process Analysis)
+- 數據視覺化 (Power BI / Tableau / Looker / QuickSight)
+- SQL 基礎查詢
+- 統計分析與 A/B 測試
+- 需求訪談與文件撰寫 (BRD, PRD)
+- 關鍵業務指標 (KPI) 設計","Jeff, Denny, Chester",,PMI-PBA (Professional in Business Analysis)
+"資料分析師 / 數據分析師
+Data Analyst (DA)","建立數據報表、進行統計分析、支持業務決策
+- 探索與分析數據，提供業務決策建議
+- 建立報表與數據儀表板，監控業務表現
+- 進行基礎統計分析與趨勢預測","數據清理與視覺化
+- 數據清理與處理
+- 數據視覺化與報表開發
+- 基礎統計分析與趨勢判讀","- SQL (CTE, ETL, 查詢最佳化)
+- 數據視覺化 (Power BI / Tableau / Looker / QuickSight)
+- 統計分析
+- Python / R（基礎數據分析）
+- Excel (樞紐分析, VBA )","Denny, Tom",Chester,
+"資料科學家 / 資料科學分析師
+Data Scientist (DS)","開發機器學習與 AI 模型，透過數據驅動業務決策
+- 建立機器學習模型與 AI 解決方案 
+- 進行數據分析，提供業務洞察 
+- 研發先進 AI 技術，解決業務問題","機器學習與 AI
+- 機器學習與預測建模
+- 深度學習與 AI 研究
+- 數據驅動決策與最佳化","- Python, R, SQL
+- 機器學習 (Scikit-Learn, TensorFlow, PyTorch, XGBoost, LightGBM)
+- 統計與數據分析 (Hypothesis Testing, Bayesian Inference, A/B Testing)
+- 數據工程 (ETL, Data Wrangling, Feature Engineering)
+- NLP / 影像辨識 (Hugging Face, OpenCV, LLMs)","Chris, Sam, 冠宏 (Kevin)",,"Google Cloud - Professional Machine Learning Engineer
+AWS Certified AI Practitioner
+AWS Certified Machine Learning Engineer – Associate
+AWS Certified Machine Learning – Specialty"
+"數據架構師 / 資料科學架構師
+Data Architect","設計數據基礎設施與資料治理策略，確保平台可擴展性與安全性
+- 設計企業數據架構與數據模型
+- 定義資料治理與標準
+- 確保數據安全與合規","數據架構設計與資料治理
+- 設計數據基礎架構與模型
+- 建立資料治理與標準
+- 確保數據安全與內外部合規性","- 資料塑模 (Data Modeling - ER, Star Schema)
+- 資料庫架構 (SQL / NoSQL / Data Lakehouse)
+- 資料治理 (Data Governance - Data Lineage, Catalog, Metadata)
+- 雲端數據平台 (AWS/GCP/Azure - BigQuery, Redshift, Snowflake)
+- ETL / ELT 設計 (Airflow, DBT, Kafka, Spark Streaming)
+- 數據安全與法規 (GDPR, CCPA, ISO 27001)","Zak, Kiwi",Roey,"Google Cloud - Professional Cloud Architect
+AWS Certified Solutions Architect - Associate
+AWS Certified Solutions Architect - Professional"
+"數據工程師 / 資料科學工程師
+Data Engineer (DE)","負責數據pipeline、服務API與數據平台，確保數據可用性與效能
+- 建構與維護數據pipeline
+- 設計與開發數據平台架構
+- 確保數據處理流程的高效能與穩定性","數據pipeline開發與數據平台建置
+- 資料處理與轉換 (ETL)
+- 雲端數據平台開發","- SQL / NoSQL (PostgreSQL, MySQL, MongoDB, Cassandra)
+- ETL / ELT (Apache Airflow, Spark, Kafka, Pub/Sub)
+- 程式語言 (Python, SQL)
+- 雲端數據倉儲 (BigQuery, Redshift, Databricks)
+- 雲端數據平台 (AWS, GCP, Azure)","Angela, Tom, Jacky, Kevin, Roey",Mandy,"Google Cloud - Associate Data Practitioner
+Google Cloud - Professional Data Engineer
+AWS Certified Data Engineer – Associate"
+"數據維運工程師
+DataOps Engineer","數據平台維運、監控及優化，及數據相關應用的測試自動化與品質控制
+- 建立數據平台自動化與監控機制
+- 執行變更申請與部署上線
+- 維護數據專案的 CI/CD 流程
+- 設計資料相關應用的功能與回歸測試流程
+- 監控數據品質與異常處理
+","數據平台維運、測試與監控
+- 數據平台自動化與監控
+- CI/CD 流程維護
+- 自動化測試整合
+- 監控數據品質","- CI/CD for Data (Git, Jenkins, Terraform)
+- 數據pipeline監控 (Prometheus, Grafana, ELK)
+- 雲端與 DevOps (Kubernetes, Docker, Terraform, AWS/GCP/Azure)
+- 測試框架與方法論(整合測試, 回歸測試, 壓力測試)
+- 程式/服務安全性 (原始碼掃描 , 弱點掃描, 滲透測試)
+- 數據品質管理 (Great Expectations, Soda SQL, Monte Carlo)","Una, Mandy, Mark",,"Google Cloud - Professional Cloud DevOps Engineer
+AWS Certified SysOps Administrator – Associate
+AWS Certified DevOps Engineer – Professional"
+"數據系統分析師
+Data System Analyst (SA)","數據API服務之技術邏輯設計與整合測試
+- 分析業務需求並設計資料 API 規格
+- 撰寫資料接口規格書與設計文件
+- 梳理資料邏輯、定義轉換與校驗規則
+- 支援資料整合與 API 測試驗證","數據API服務之技術邏輯設計與測試驗證
+- 需求資料流與服務邏輯設計
+- 熟悉資料表欄位邏輯與轉換流程
+- 熟悉 RESTful API 設計
+- 測試案例撰寫與資料驗證
+- 產出API介面文件與技術說明","- SQL 查詢、資料理解與資料塑模 (JSON / XML, Data Modeling)
+- 數據服務API設計 (RESTful API, Swagger/OpenAPI)
+- API 規格文件撰寫 (流程圖 / UML)
+- API 測試設計與驗證 (Postman / Apache Jmeter/ Selenium / Swagger)",Mark,,
+"組長
+Functional Leader","負責團隊特定職能的技術方向與標準制定，協調跨職能需求，提升團隊效能與相關能力
+- 負責該職能領域的策略規劃與執行
+- 建立並提升團隊技能與知識共享
+- 協助專案推進並提供技術指導","(通用)
+- 相關領域專業知識
+- 團隊管理與溝通協調
+- 策略規劃與技術發展",,"Zak, Jeff, Jin, Gail",,
+Scrum Master (SM),"確保團隊運行在Scrum 的框架，激發團隊的溝通與效能
+- 負責敏捷流程落地，確保 Scrum 框架運作順利
+- 協助團隊解決障礙，提升開發效率
+- 推動持續改進，提高團隊協作與交付品質","- Scrum & Agile 方法論
+- 團隊協作與溝通技巧
+- 風險管理與衝刺規劃","- Scrum / Agile / Kanban
+- Sprint Planning & Retrospective
+- JIRA / Confluence / Trello
+- Stakeholder Management
+- Coaching & Facilitation","Jin, Gail, Jeff",,"PMI-ACP (Agile Certified Practitioner)
+Scrum Alliance - Certified ScrumMaster (CSM)
+Scrum Alliance - A-CSM (Advanced Certified ScrumMaster)"
