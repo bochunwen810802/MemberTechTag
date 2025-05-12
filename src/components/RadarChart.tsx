@@ -8,13 +8,15 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
-import { MemberSkills } from '../types';
+import { MemberSkills, ScoringCriteria } from '../types';
 
 interface RadarChartProps {
   memberSkills: MemberSkills;
+  selectedRole: string;
+  skillCategories: ScoringCriteria[];
 }
 
-const SkillRadarChart: React.FC<RadarChartProps> = ({ memberSkills }) => {
+const SkillRadarChart: React.FC<RadarChartProps> = ({ memberSkills, selectedRole, skillCategories }) => {
   // 按项目分类分组并计算平均值
   const categoryData = memberSkills.skills.reduce((acc, skill) => {
     if (!acc[skill.category]) {
@@ -25,7 +27,9 @@ const SkillRadarChart: React.FC<RadarChartProps> = ({ memberSkills }) => {
       };
     }
     acc[skill.category].actual += skill.score;
-    acc[skill.category].expected += skill.expectedScore;
+    // 依照 selectedRole 計算期望能力
+    const categoryCriteria = skillCategories.find(c => (c.category ?? '').trim() === (skill.category ?? '').trim());
+    acc[skill.category].expected += categoryCriteria ? (categoryCriteria.scores[selectedRole] || 0) : 0;
     acc[skill.category].count += 1;
     return acc;
   }, {} as { [key: string]: { actual: number; expected: number; count: number } });

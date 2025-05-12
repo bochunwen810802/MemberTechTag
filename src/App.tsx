@@ -47,6 +47,7 @@ function App() {
   const [selectedMember, setSelectedMember] = useState<string>('');
   const [tabValue, setTabValue] = useState(0);
   const [skillCategories, setSkillCategories] = useState<ScoringCriteria[]>([]);
+  const [selectedRole, setSelectedRole] = useState<string>('');
 
   useEffect(() => {
     const loadData = async () => {
@@ -57,6 +58,7 @@ function App() {
         setSkillCategories(skillCategories);
         if (memberSkills.length > 0) {
           setSelectedMember(memberSkills[0].name);
+          setSelectedRole(memberSkills[0].role);
         }
         setLoading(false);
       } catch (error) {
@@ -74,6 +76,8 @@ function App() {
 
   const handleMemberChange = (event: SelectChangeEvent) => {
     setSelectedMember(event.target.value);
+    const member = memberSkills.find(m => m.name === event.target.value);
+    setSelectedRole(member?.role ?? '');
   };
 
   const selectedMemberData = memberSkills.find(member => member.name === selectedMember);
@@ -133,6 +137,8 @@ function App() {
                 skillCategories={skillCategories}
                 allRoles={Object.keys(skillCategories[0]?.scores ?? {})}
                 defaultRole={selectedMemberData.role}
+                selectedRole={selectedRole}
+                setSelectedRole={setSelectedRole}
                 showRoleSelectOnly
               />
             )}
@@ -141,7 +147,11 @@ function App() {
         {selectedMemberData && skillCategories.length > 0 && (
           <>
             <Box sx={{ mb: 4 }}>
-              <SkillRadarChart memberSkills={selectedMemberData} />
+              <SkillRadarChart
+                memberSkills={selectedMemberData}
+                selectedRole={selectedRole}
+                skillCategories={skillCategories}
+              />
             </Box>
             <SkillProgress
               memberSkills={selectedMemberData}
@@ -150,6 +160,8 @@ function App() {
               skillCategories={skillCategories}
               allRoles={Object.keys(skillCategories[0]?.scores ?? {})}
               defaultRole={selectedMemberData.role}
+              selectedRole={selectedRole}
+              setSelectedRole={setSelectedRole}
               hideRoleSelect
             />
           </>

@@ -20,6 +20,8 @@ interface SkillProgressProps {
   defaultRole: string;
   showRoleSelectOnly?: boolean;
   hideRoleSelect?: boolean;
+  selectedRole: string;
+  setSelectedRole: (role: string) => void;
 }
 
 const SkillProgress: React.FC<SkillProgressProps> = ({
@@ -31,10 +33,9 @@ const SkillProgress: React.FC<SkillProgressProps> = ({
   defaultRole,
   showRoleSelectOnly,
   hideRoleSelect,
+  selectedRole,
+  setSelectedRole,
 }) => {
-  // 新增 state 控制目前選擇的職能
-  const [selectedRole, setSelectedRole] = useState(defaultRole);
-
   // 按项目分类分组并计算平均值
   const categoryStats = memberSkills.skills.reduce((acc, skill) => {
     if (!acc[skill.category]) {
