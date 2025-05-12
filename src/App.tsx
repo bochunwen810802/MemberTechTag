@@ -107,23 +107,38 @@ function App() {
       </Box>
 
       <TabPanel value={tabValue} index={0}>
-        <Box sx={{ mb: 3 }}>
-          <FormControl fullWidth>
-            <InputLabel>選擇成員</InputLabel>
-            <Select
-              value={selectedMember}
-              label="選擇成員"
-              onChange={handleMemberChange}
-            >
-              {memberSkills.map((member) => (
-                <MenuItem key={member.name} value={member.name}>
-                  {member.name} - {member.role}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+        <Box sx={{ mb: 3, display: 'flex', gap: 2 }}>
+          <Box sx={{ flex: 1 }}>
+            <FormControl fullWidth>
+              <InputLabel>選擇成員</InputLabel>
+              <Select
+                value={selectedMember}
+                label="選擇成員"
+                onChange={handleMemberChange}
+              >
+                {memberSkills.map((member) => (
+                  <MenuItem key={member.name} value={member.name}>
+                    {member.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
+          <Box sx={{ flex: 1 }}>
+            {selectedMemberData && skillCategories.length > 0 && (
+              <SkillProgress
+                memberSkills={selectedMemberData}
+                onMemberChange={setSelectedMember}
+                allMembers={memberSkills.map(m => m.name)}
+                skillCategories={skillCategories}
+                allRoles={Object.keys(skillCategories[0]?.scores ?? {})}
+                defaultRole={selectedMemberData.role}
+                showRoleSelectOnly
+              />
+            )}
+          </Box>
         </Box>
-        {selectedMemberData && (
+        {selectedMemberData && skillCategories.length > 0 && (
           <>
             <Box sx={{ mb: 4 }}>
               <SkillRadarChart memberSkills={selectedMemberData} />
@@ -133,6 +148,9 @@ function App() {
               onMemberChange={setSelectedMember}
               allMembers={memberSkills.map(m => m.name)}
               skillCategories={skillCategories}
+              allRoles={Object.keys(skillCategories[0]?.scores ?? {})}
+              defaultRole={selectedMemberData.role}
+              hideRoleSelect
             />
           </>
         )}

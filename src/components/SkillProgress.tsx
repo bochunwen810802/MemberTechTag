@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Paper,
   Typography,
   LinearProgress,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from '@mui/material';
 import { MemberSkills, ScoringCriteria } from '../types';
 
@@ -12,6 +16,10 @@ interface SkillProgressProps {
   onMemberChange: (memberName: string) => void;
   allMembers: string[];
   skillCategories: ScoringCriteria[];
+  allRoles: string[];
+  defaultRole: string;
+  showRoleSelectOnly?: boolean;
+  hideRoleSelect?: boolean;
 }
 
 const SkillProgress: React.FC<SkillProgressProps> = ({
@@ -19,7 +27,14 @@ const SkillProgress: React.FC<SkillProgressProps> = ({
   onMemberChange,
   allMembers,
   skillCategories,
+  allRoles,
+  defaultRole,
+  showRoleSelectOnly,
+  hideRoleSelect,
 }) => {
+  // 新增 state 控制目前選擇的職能
+  const [selectedRole, setSelectedRole] = useState(defaultRole);
+
   // 按项目分类分组并计算平均值
   const categoryStats = memberSkills.skills.reduce((acc, skill) => {
     if (!acc[skill.category]) {
@@ -37,8 +52,41 @@ const SkillProgress: React.FC<SkillProgressProps> = ({
     return acc;
   }, {} as { [key: string]: { skills: typeof memberSkills.skills; totalExpected: number; totalActual: number; count: number } });
 
+  // 只顯示職能下拉（主畫面右側）
+  if (showRoleSelectOnly) {
+    return (
+      <FormControl fullWidth>
+        <InputLabel>選擇職能</InputLabel>
+        <Select
+          value={selectedRole}
+          label="選擇職能"
+          onChange={e => setSelectedRole(e.target.value)}
+        >
+          {allRoles.map(role => (
+            <MenuItem key={role} value={role}>{role}</MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    );
+  }
+
+  // 只顯示進度條（不顯示職能下拉）
   return (
     <Box sx={{ width: '100%' }}>
+      {!hideRoleSelect && (
+        <FormControl fullWidth sx={{ mb: 2 }}>
+          <InputLabel>選擇職能</InputLabel>
+          <Select
+            value={selectedRole}
+            label="選擇職能"
+            onChange={e => setSelectedRole(e.target.value)}
+          >
+            {allRoles.map(role => (
+              <MenuItem key={role} value={role}>{role}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      )}
       <Box sx={{ 
         display: 'grid', 
         gridTemplateColumns: {
@@ -49,7 +97,7 @@ const SkillProgress: React.FC<SkillProgressProps> = ({
       }}>
         {Object.entries(categoryStats).map(([category, stats]) => {
           const safeCategory = (category ?? '').trim();
-          const safeRole = (memberSkills.role ?? '').trim();
+          const safeRole = (selectedRole ?? '').trim();
           const categoryCriteria = skillCategories.find(c => (c.category ?? '').trim() === safeCategory);
           const expectedAverage = categoryCriteria ? (categoryCriteria.scores[safeRole] || 0) : 0;
           const actualAverage = stats.totalActual / stats.count;
