@@ -5,18 +5,20 @@ import {
   Typography,
   LinearProgress,
 } from '@mui/material';
-import { MemberSkills } from '../types';
+import { MemberSkills, ScoringCriteria } from '../types';
 
 interface SkillProgressProps {
   memberSkills: MemberSkills;
   onMemberChange: (memberName: string) => void;
   allMembers: string[];
+  skillCategories: ScoringCriteria[];
 }
 
 const SkillProgress: React.FC<SkillProgressProps> = ({
   memberSkills,
   onMemberChange,
   allMembers,
+  skillCategories,
 }) => {
   // 按项目分类分组并计算平均值
   const categoryStats = memberSkills.skills.reduce((acc, skill) => {
@@ -46,7 +48,10 @@ const SkillProgress: React.FC<SkillProgressProps> = ({
         gap: 3 
       }}>
         {Object.entries(categoryStats).map(([category, stats]) => {
-          const expectedAverage = stats.totalExpected / stats.count;
+          const safeCategory = (category ?? '').trim();
+          const safeRole = (memberSkills.role ?? '').trim();
+          const categoryCriteria = skillCategories.find(c => (c.category ?? '').trim() === safeCategory);
+          const expectedAverage = categoryCriteria ? (categoryCriteria.scores[safeRole] || 0) : 0;
           const actualAverage = stats.totalActual / stats.count;
           
           return (
@@ -67,7 +72,7 @@ const SkillProgress: React.FC<SkillProgressProps> = ({
                     實際平均值: {actualAverage.toFixed(2)}
                     <LinearProgress
                       variant="determinate"
-                      value={(actualAverage / expectedAverage) * 100}
+                      value={expectedAverage === 0 ? 0 : (actualAverage / expectedAverage) * 100}
                       sx={{ 
                         height: 4, 
                         width: 50, 
@@ -92,7 +97,7 @@ const SkillProgress: React.FC<SkillProgressProps> = ({
                     </Box>
                     <LinearProgress
                       variant="determinate"
-                      value={(skill.score / skill.expectedScore) * 100}
+                      value={skill.expectedScore === 0 ? 0 : (skill.score / skill.expectedScore) * 100}
                       sx={{
                         height: 8,
                         borderRadius: 4,

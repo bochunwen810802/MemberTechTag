@@ -1,16 +1,16 @@
-﻿姓名,職能
-Gail,TPM & AI
-Kevin,DS & AI
-Chris,DS & AI
-Sam,DS & AI
+﻿姓名,預設職能
+Gail,TPM
+Kevin_冠宏,DS
+Chris,DS
+Sam,DS
 Jeff,TPM
-Denny,BA & TPM
+Denny,BA
 Chester,BA
-Zak,架構 + TPM + 維運
+Zak,架構
 Una,維運
 Mandy,維運
-Mark,維運 + 系統分析
-Kiwi,架構 + 維運
+Mark,系統分析
+Kiwi,架構
 Jin,TPM
 Tom,DE
 Angela,DE

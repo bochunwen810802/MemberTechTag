@@ -14,17 +14,9 @@ import {
 } from '@mui/material';
 import SkillRadarChart from './components/RadarChart';
 import SkillProgress from './components/SkillProgress';
-import RawDataTable from './components/RawDataTable';
-import {
-  loadCSVData,
-  processSkillData,
-  processJobData,
-  processScoringCriteria,
-  calculateCategoryAverages,
-  getMemberSkills,
-} from './services/dataService';
-import { MemberSkills, CategoryAverage } from './types';
 import TeamStats from './components/TeamStats';
+import { fetchAllData } from './services/dataService';
+import { MemberSkills, CategoryAverage, ScoringCriteria } from './types';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -54,31 +46,17 @@ function App() {
   const [categoryAverages, setCategoryAverages] = useState<CategoryAverage[]>([]);
   const [selectedMember, setSelectedMember] = useState<string>('');
   const [tabValue, setTabValue] = useState(0);
+  const [skillCategories, setSkillCategories] = useState<ScoringCriteria[]>([]);
 
   useEffect(() => {
     const loadData = async () => {
       try {
-        const [rawData, jobData, scoringData] = await Promise.all([
-          loadCSVData('/File/RAW.csv'),
-          loadCSVData('/File/Job.csv'),
-          loadCSVData('/File/ScoringCriteria.csv'),
-        ]);
-
-        const processedSkillData = processSkillData(rawData);
-        const processedJobData = processJobData(jobData);
-        const processedScoringCriteria = processScoringCriteria(scoringData);
-
-        const members = getMemberSkills(
-          processedSkillData,
-          processedJobData,
-          processedScoringCriteria
-        );
-        const averages = calculateCategoryAverages(processedSkillData);
-
-        setMemberSkills(members);
-        setCategoryAverages(averages);
-        if (members.length > 0) {
-          setSelectedMember(members[0].name);
+        const { memberSkills, categoryAverages, skillCategories } = await fetchAllData();
+        setMemberSkills(memberSkills);
+        setCategoryAverages(categoryAverages);
+        setSkillCategories(skillCategories);
+        if (memberSkills.length > 0) {
+          setSelectedMember(memberSkills[0].name);
         }
         setLoading(false);
       } catch (error) {
@@ -95,10 +73,7 @@ function App() {
   };
 
   const handleMemberChange = (event: SelectChangeEvent) => {
-    const member = memberSkills.find(m => m.name === event.target.value);
-    if (member) {
-      setSelectedMember(member.name);
-    }
+    setSelectedMember(event.target.value);
   };
 
   const selectedMemberData = memberSkills.find(member => member.name === selectedMember);
@@ -157,6 +132,7 @@ function App() {
               memberSkills={selectedMemberData}
               onMemberChange={setSelectedMember}
               allMembers={memberSkills.map(m => m.name)}
+              skillCategories={skillCategories}
             />
           </>
         )}

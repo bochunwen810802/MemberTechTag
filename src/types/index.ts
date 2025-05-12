@@ -14,18 +14,32 @@ export interface ScoringCriteria {
   scores: { [key: string]: number };
 }
 
-export interface CategoryAverage {
+export interface Member {
+  name: string;
+  role: string;
+}
+
+export interface SkillCategory {
   category: string;
-  average: number;
+  scores: {
+    [role: string]: number;
+  };
+}
+
+export interface MemberSkill {
+  category: string;
+  name: string;
+  score: number;
+  expectedScore: number;
 }
 
 export interface MemberSkills {
   name: string;
   role: string;
-  skills: {
-    category: string;
-    name: string;
-    score: number;
-    expectedScore: number;
-  }[];
+  skills: MemberSkill[];
+}
+
+export interface CategoryAverage {
+  category: string;
+  average: number;
 } 
